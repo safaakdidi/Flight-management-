@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 @OutboundConnector(
     name = "MYCONNECTOR",
-    inputVariables = {"authentication", "message"},
-    type = "io.camunda:template:1")
+    inputVariables = {"maintain"},
+    type = "maintainOk")
 @ElementTemplate(
     id = "io.camunda.connector.Template.v1",
     name = "Template connector",
@@ -37,12 +37,10 @@ public class MyConnectorFunction implements OutboundConnectorFunction {
   }
 
   private MyConnectorResult executeConnector(final MyConnectorRequest connectorRequest) {
-    // TODO: implement connector logic
-    LOGGER.info("Executing my connector with request {}", connectorRequest);
-    String message = connectorRequest.message();
-    if (message != null && message.toLowerCase().startsWith("fail")) {
-      throw new ConnectorException("FAIL", "My property started with 'fail', was: " + message);
-    }
-    return new MyConnectorResult("Message received: " + message);
+    LOGGER.info("Executing my connector with input nom: {}", connectorRequest);
+
+    String outputMessage = "Bonjour " + connectorRequest + "!";
+
+    return new MyConnectorResult(outputMessage);
   }
 }
